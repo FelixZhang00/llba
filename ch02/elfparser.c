@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
 
     printf("Section header list:\n\n");
     for (i = 1; i < ehdr->e_shnum; i++) {
-        printf("%s:0x%x\n", &StringTable[shdr[i].sh_name], shdr[i].sh_addr)
+        printf("%s:0x%x\n", &StringTable[shdr[i].sh_name], shdr[i].sh_addr);
     }
 
 
