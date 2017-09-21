@@ -77,5 +77,35 @@ int main(int argc, char **argv) {
         printf("%s:0x%x\n", &StringTable[shdr[i].sh_name], shdr[i].sh_addr);
     }
 
+    printf("\nProgram header list\n\n");
+    for(i = 0; i < ehdr->e_phnum;i++){
+        switch(phdr[i].p_type){
+            case PT_LOAD:
+                //we know that text segment starts at offset 0.
+                //and only one other possible loadable segment eixts
+                //which is the data segment.
+                //$readelf -l xxx
+                if(phdr[i].p_offset == 0){
+                    printf("Text segment:0x%x\n",phdr[i].p_vaddr);
+                }else{
+                    printf("Data segment:0x%x\n",phdr[i].p_vaddr);
+                }
+            break;
+            case PT_INTERP:
+                interp = strdup((char *)&mem[phdr[i].p_offset]);
+                printf("Interpreter:%s\n",interp);
+                break;
+            case PT_NOTE:
+                printf("Note segment: 0x%x\n",phdr[i].p_vaddr);
+                break;
+            case PT_DYNAMIC:
+                printf("Dynamic segment:0x%x\n",phdr[i].p_vaddr);
+                break;
+            case PT_PHDR:
+                printf("Phdr segment: 0x%x\n",phdr[i].p_vaddr);
+                break;
+        }
+    }
 
+    exit(0);
 }
